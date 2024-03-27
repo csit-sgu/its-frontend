@@ -1,7 +1,13 @@
-export function GoodBadMetrics({ good, bad }: { good: number; bad: number }) {
+export function GoodBadMetrics({
+  goodPercentage,
+  badPercentage,
+}: {
+  goodPercentage: number;
+  badPercentage: number;
+}) {
   return (
     <div>
-      Good bad metrics: {good} {bad}
+      Good bad metrics: {goodPercentage} {badPercentage}
     </div>
   );
 }
