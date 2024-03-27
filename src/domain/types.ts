@@ -1,0 +1,1 @@
+type TaskType = 'incident' | 'regular';
