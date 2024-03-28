@@ -19,3 +19,10 @@ export type TaskTransition = {
   taskStageId: TaskStage;
   transitionedAt: dayjs.Dayjs;
 };
+
+export type RegionId = string;
+
+export type Region = {
+  regionId: RegionId;
+  name: string;
+};
