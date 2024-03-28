@@ -64,11 +64,7 @@ export default function RegionProfile({ params }: { params: { regionId: string }
 
   return (
     <div className="container">
-      <div className="flex flex-col pt-5 pb-5 justify-center md:flex-row">
-        <h2 className="font-bold text-2xl text-center mb-3 md:text-4xl lg:mb-0">
-          Саратовская область
-        </h2>
-      </div>
+      <h2 className="font-bold text-2xl text-center mb-3 md:text-4xl lg:mb-0">Саратовская область</h2>
       <div className="flex flex-col-reverse lg:flex-row">
         <div className="lg:w-[70%] lg:pr-4 w-[100%] pr-0 mb-3">
           {tasksQuery.isLoading && (
