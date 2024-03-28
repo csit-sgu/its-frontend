@@ -75,7 +75,6 @@ export default function ObjectProfilePage() {
         </div>
       </div>
       <Tabs
-        defaultValue="account"
         className="w-[100%]"
         value={currentTaskType}
         onValueChange={(v) => setCurrentTaskType(v as TaskType | 'all')}
