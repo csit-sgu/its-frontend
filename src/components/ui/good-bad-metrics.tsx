@@ -1,9 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function GoodBadMetrics({
   goodPercentage,
@@ -13,43 +8,43 @@ export function GoodBadMetrics({
 }: {
   goodPercentage: number;
   badPercentage: number;
-  size: number,
-  className?: string,
+  size: number;
+  className?: string;
 }) {
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle>Соотношение хорошо/плохо</CardTitle>
+        <CardTitle>
+          Соотношение хорошо/плохо ({goodPercentage}%/{badPercentage}%)
+        </CardTitle>
       </CardHeader>
       <CardContent>
-        <form>
-          <div className="grid w-full items-center gap-4">
-            <svg
-              className="PieChart"
-              width={size}
-              height={size}
-              viewBox={`0 0 ${size} ${size}`}
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <Slice size={size} color="#D90429" start={0} amount={badPercentage} />
-              <Slice
-                size={size}
-                color="#43AA8B"
-                start={badPercentage}
-                amount={goodPercentage}
-              />
-            </svg>
-          </div>
-        </form>
+        <div className="flex w-full justify-center">
+          <svg
+            className="PieChart"
+            width={size}
+            height={size}
+            viewBox={`0 0 ${size} ${size}`}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <Slice size={size} color="#D90429" start={0} amount={badPercentage} />
+            <Slice size={size} color="#43AA8B" start={badPercentage} amount={goodPercentage} />
+          </svg>
+        </div>
       </CardContent>
     </Card>
   );
 }
-function Slice({ size, color, start, amount }: {
-  size: number,
-  color: string,
-  start: number,
-  amount: number,
+function Slice({
+  size,
+  color,
+  start,
+  amount,
+}: {
+  size: number;
+  color: string;
+  start: number;
+  amount: number;
 }) {
   const circumference = Math.round(Math.PI * (size / 2));
   return (
