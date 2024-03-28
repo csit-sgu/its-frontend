@@ -11,7 +11,6 @@ import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { AccountId, TaskType } from '@/domain/types';
 import dayjs from 'dayjs';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
@@ -42,9 +41,6 @@ export default function RegionProfile({ params }: { params: { regionId: string }
     <div className="container">
       <div className="flex flex-col pt-5 pb-5 justify-center md:flex-row">
         <h2 className="font-bold text-2xl text-center mb-3 md:text-4xl lg:mb-0">Саратовская область</h2>
-        <Link href="/regions" className={buttonVariants({ variant: 'outline' }) + ' ml-2'}>
-          Сменить регион
-        </Link>
       </div>
       <div className="flex flex-col-reverse lg:flex-row">
         <div className="lg:w-[70%] lg:pr-4 w-[100%] pr-0 mb-3">
