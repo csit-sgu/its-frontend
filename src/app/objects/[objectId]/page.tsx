@@ -85,7 +85,7 @@ export default function ObjectProfilePage() {
           />
         </div>
       </div>
-      <Tabs defaultValue="account" className="w-[100%]">
+      <Tabs defaultValue="tasks" className="w-[100%]">
         <TabsList>
           <TabsTrigger value="tasks">Все задачи</TabsTrigger>
           <TabsTrigger value="incidents">Инциденты</TabsTrigger>
