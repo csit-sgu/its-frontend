@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
+import dayjs from 'dayjs';
 import { Inter as FontSans } from 'next/font/google';
 import './globals.css';
-
 import { cn } from '@/lib/utils';
+
+dayjs.locale('ru-ru');
 
 const fontSans = FontSans({
   subsets: ['latin', 'cyrillic'],
