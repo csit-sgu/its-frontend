@@ -1,12 +1,23 @@
-import { TaskEntity, TaskTransition } from '@/domain/types';
+import { TaskEntity, TaskType } from '@/domain/types';
 import { useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TaskStage } from './task-stage';
 import { TaskStageTimeline } from './task-stage-timeline';
+import { Badge } from '@/components/ui/badge';
 
 // TODO: Подгружать с бека информацию об подрядчике и создателе задачи
 // TODO: Спросить, откуда берётся title
+
+const badgeVariant: Record<TaskType, 'default' | 'secondary' | 'destructive' | 'outline'> = {
+  incident: 'destructive',
+  regular: 'secondary',
+};
+
+const badgeText: Record<TaskType, string> = {
+  incident: 'Инцидент',
+  regular: 'Регулярная',
+};
 
 export function TaskItem({
   taskId,
@@ -14,8 +25,8 @@ export function TaskItem({
   assignerId,
   taskableType,
   deadlineAt,
-  ...props
-}: TaskEntity | Record<string, string>) {
+  className,
+}: TaskEntity & { className?: string }) {
   const [historyIsOpen, setHistoryIsOpen] = useState<boolean>(false);
 
   const historyButton = (
@@ -29,9 +40,10 @@ export function TaskItem({
   );
 
   return (
-    <Card {...props}>
-      <CardHeader>
+    <Card className={className}>
+      <CardHeader className="flex flex-row justify-between">
         <CardTitle>Задача 1</CardTitle>
+        <Badge variant={badgeVariant[taskableType]}>{badgeText[taskableType]}</Badge>
       </CardHeader>
       <CardContent>
         <p>

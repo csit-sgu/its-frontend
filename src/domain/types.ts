@@ -32,4 +32,4 @@ export type AccountId = string;
 export type Account = {
   accountId: AccountId;
   name: string;
-}
+};

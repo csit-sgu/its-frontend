@@ -54,7 +54,7 @@ export default function RegionProfile({ params }: { params: { regionId: string }
               taskId={'aboba'}
               accountId={'aboba'}
               assignerId={'aboba'}
-              taskableType={'incident'}
+              taskableType={'regular'}
               deadlineAt={dayjs().add(1, 'day')}
               className="mb-5"
             />
@@ -78,7 +78,7 @@ export default function RegionProfile({ params }: { params: { regionId: string }
               taskId={'aboba'}
               accountId={'aboba'}
               assignerId={'aboba'}
-              taskableType={'incident'}
+              taskableType={'regular'}
               deadlineAt={dayjs().add(1, 'day')}
               className="mb-5"
             />
