@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
-        <Navbar></Navbar>
+        <Navbar />
         {children}
       </body>
     </html>
