@@ -4,8 +4,6 @@ import { Inter as FontSans } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 
-dayjs.locale('ru-ru');
-
 const fontSans = FontSans({
   subsets: ['latin', 'cyrillic'],
   variable: '--font-sans',
@@ -21,6 +19,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  dayjs.locale('ru-ru');
+
   return (
     <html lang="ru">
       <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>

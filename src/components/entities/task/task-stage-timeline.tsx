@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TaskId, TaskTransition } from '@/domain/types';
+import { formatDate } from '@/lib/utils';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
@@ -40,7 +41,7 @@ export function TaskStageTimeline({
               <CardHeader>
                 <CardTitle>Происходит абоба</CardTitle>
                 <CardDescription>
-                  <b>Сделано</b>: {t.transitionedAt.format()}
+                  <b>Сделано</b>: {formatDate(t.transitionedAt)}
                 </CardDescription>
               </CardHeader>
             </Card>
