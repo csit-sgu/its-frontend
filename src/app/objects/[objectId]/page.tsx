@@ -1,9 +1,16 @@
 'use client';
 
 import dayjs from 'dayjs';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { TaskItem } from '@/components/entities/task/task-item';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { TaskEntity } from '@/domain/types';
+import { EfficiencyMetrics } from '@/components/ui/efficiency-metrics';
+import { AccountId, TaskEntity, TaskType } from '@/domain/types';
+import { useState } from 'react';
+import { Label } from '@/components/ui/label';
+import { AccountPicker } from '@/components/entities/accounts/account-picker';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const incidents: TaskEntity[] = Array.from({ length: 50 }).map((_, i, a) => ({
   taskId: i.toString(),
@@ -22,31 +29,69 @@ const regulars: TaskEntity[] = Array.from({ length: 50 }).map((_, i, a) => ({
 }));
 
 export default function ObjectProfilePage() {
+  const [accountId, setAccountId] = useState<AccountId>('ALL');
+  // TODO: Соотнести с названиями для типов параметров на беке, когда будет готово API
+  const [taskTypes, setTaskTypes] = useState<TaskType[]>(['incident', 'regular']);
+
+  const toggleTaskType = (taskType: TaskType) => {
+    if (taskTypes.includes(taskType)) {
+      setTaskTypes((v) => v.filter((t) => t !== taskType));
+    } else {
+      setTaskTypes((v) => [...v, taskType]);
+    }
+  };
   return (
     <div className="container">
-      <div className="flex pt-5 pb-5 justify-center">
-        <h2 className="font-bold text-4xl">Название объекта</h2>
-      </div>
-      <div className="flex">
-        <div className="w-[50%] p-4">
-          <p className="text-2xl mb-5 font-bold hover:font-bold">Список инцидентов</p>
-          <ScrollArea className="flex flex-col h-[85vh]">
-            {incidents.map((t) => (
-              <TaskItem
-                taskId={t.taskId}
-                accountId={t.accountId}
-                assignerId={t.assignerId}
-                taskableType={t.taskableType}
-                deadlineAt={t.deadlineAt}
-                key={t.accountId}
-                className="mb-5"
-              />
-            ))}
-          </ScrollArea>
+      <div className="flex flex-col md:flex-row">
+        <Card className="flex flex-col m-3 mt-5 ml-0 w-full md:w-[60%]">
+          <div className="flex flex-col md:flex-row">
+            <img src="/img.png" alt="img" className="m-[30px] size-[100px]" />
+            <CardHeader>
+              <CardTitle>Тип объекта</CardTitle>
+              <CardDescription>км 4+700 а/д А-149 Адлер-Красная поляна</CardDescription>
+              <CardDescription><b>Обслуживающая компания</b>: ФКУ Упрдор "Черноморье"</CardDescription>
+            </CardHeader>
+          </div>
+          <CardContent className="pt-6">
+            <p className="text-lg">
+              <b>Дата последнего обслуживания: </b>
+              2024-03-03
+            </p>
+            <p className="text-lg">
+              <b>Количество инцидентов с последнего обслуживания: </b>
+              10
+            </p>
+            <p className="text-lg">
+              <b>Интервал плановых работ: </b> <br/>
+              Каждые 30 дней в течении 10 дней
+            </p>
+          </CardContent>
+        </Card>
+        <div className="flex flex-col mt-0 mb-3 w-full md:mt-5 md:w-[40%]">
+          <Card className="mb-3">
+            <CardHeader>
+              <CardTitle>Фильтры</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div>
+                <Label>Организация:</Label>
+                <AccountPicker value={accountId ?? 'ALL'} onChange={(v) => setAccountId(v)} />
+              </div>
+            </CardContent>
+          </Card>
+          <EfficiencyMetrics
+            relative={666}
+            absolute={999}
+          />
         </div>
-        <div className="w-[50%] p-4">
-          <p className="text-2xl mb-5 font-bold hover:font-bold">Список регулярных задач</p>
-          <ScrollArea className="flex flex-col h-[85vh]">
+      </div>
+      <Tabs defaultValue="account" className="w-[100%]">
+        <TabsList>
+          <TabsTrigger value="tasks">Все задачи</TabsTrigger>
+          <TabsTrigger value="incidents">Инциденты</TabsTrigger>
+          <TabsTrigger value="regular">Плановые</TabsTrigger>
+        </TabsList>
+        <TabsContent value="tasks">
             {regulars.map((t) => (
               <TaskItem
                 taskId={t.taskId}
@@ -58,9 +103,34 @@ export default function ObjectProfilePage() {
                 className="mb-5"
               />
             ))}
-          </ScrollArea>
-        </div>
-      </div>
+        </TabsContent>
+        <TabsContent value="incidents">
+            {incidents.map((t) => (
+              <TaskItem
+                taskId={t.taskId}
+                accountId={t.accountId}
+                assignerId={t.assignerId}
+                taskableType={t.taskableType}
+                deadlineAt={t.deadlineAt}
+                key={t.accountId}
+                className="mb-5"
+              />
+            ))}
+        </TabsContent>
+        <TabsContent value="regular">
+            {regulars.map((t) => (
+              <TaskItem
+                taskId={t.taskId}
+                accountId={t.accountId}
+                assignerId={t.assignerId}
+                taskableType={t.taskableType}
+                deadlineAt={t.deadlineAt}
+                key={t.accountId}
+                className="mb-5"
+              />
+            ))}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
