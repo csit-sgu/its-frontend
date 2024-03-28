@@ -95,7 +95,7 @@ export default function RegionProfile({ params }: { params: { regionId: string }
           </ScrollArea>
         </div>
         <div className="w-[30%]">
-          <EfficiencyMetrics relative={666} absolute={999} />
+          <EfficiencyMetrics relative={666} absolute={999} className='mb-3' />
           <GoodBadMetrics goodPercentage={70} badPercentage={30} size={300} />
         </div>
       </div>
