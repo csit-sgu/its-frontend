@@ -40,15 +40,15 @@ export default function RegionProfile({ params }: { params: { regionId: string }
 
   return (
     <div className="container">
-      <div className="flex pt-5 pb-5 justify-center">
-        <h2 className="font-bold text-4xl">Саратовская область</h2>
+      <div className="flex flex-col pt-5 pb-5 justify-center md:flex-row">
+        <h2 className="font-bold text-2xl text-center mb-3 md:text-4xl lg:mb-0">Саратовская область</h2>
         <Link href="/regions" className={buttonVariants({ variant: 'outline' }) + ' ml-2'}>
           Сменить регион
         </Link>
       </div>
-      <div className="flex">
-        <div className="w-[70%] pr-4">
-          <ScrollArea className="h-[70vh] w-[100%] rounded-md border p-4">
+      <div className="flex flex-col-reverse lg:flex-row">
+        <div className="lg:w-[70%] lg:pr-4 w-[100%] pr-0 mb-3">
+          <ScrollArea className="w-[100%] rounded-md border p-4">
             <TaskItem
               taskId={'aboba'}
               accountId={'aboba'}
@@ -107,7 +107,7 @@ export default function RegionProfile({ params }: { params: { regionId: string }
             />
           </ScrollArea>
         </div>
-        <div className="w-[30%]">
+        <div className="flex flex-col w-[100%] mb-3 lg:w-[30%] lg:h-screen lg:sticky lg:top-5">
           <Card className="mb-3">
             <CardHeader>
               <CardTitle>Фильтры</CardTitle>
@@ -148,8 +148,10 @@ export default function RegionProfile({ params }: { params: { regionId: string }
               </div>
             </CardContent>
           </Card>
-          <EfficiencyMetrics relative={666} absolute={999} className="mb-3" />
-          <GoodBadMetrics goodPercentage={70} badPercentage={30} size={300} />
+          <div className="flex flex-col md:flex-row lg:flex-col">
+            <EfficiencyMetrics relative={666} absolute={999} className="mb-3 lg:mb-3 lg:w-full md:mb-0 md:w-[50%] md:mr-3 md:h-auto" />
+            <GoodBadMetrics goodPercentage={70} badPercentage={30} size={300} className="w-full lg:w-full md:w-[50%] md:h-auto" />
+          </div>
         </div>
       </div>
     </div>
