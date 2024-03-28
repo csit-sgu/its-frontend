@@ -16,8 +16,8 @@ import {
 } from '@/components/ui/form';
 
 const loginFormSchema = z.object({
-  username: z.string().min(8, { message: 'Введите имя пользователя' }),
-  password: z.string().min(8, { message: 'Введите пароль' }),
+  username: z.string().min(1, { message: 'Введите имя пользователя' }),
+  password: z.string().min(1, { message: 'Введите пароль' }),
 });
 
 export default function Login() {
