@@ -28,7 +28,6 @@ export default function RegionProfile({ params }: { params: { regionId: string }
   const searchParams = useSearchParams();
   const [accountId, setAccountId] = useState<AccountId>('ALL');
   // TODO: Соотнести с названиями для типов параметров на беке, когда будет готово API
-  // const taskTypes: TaskType[] = processTaskTypesParam(searchParams.get('task-types'));
   const [taskTypes, setTaskTypes] = useState<TaskType[]>(['incident', 'regular']);
 
   const toggleTaskType = (taskType: TaskType) => {
