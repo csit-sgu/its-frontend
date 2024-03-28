@@ -26,3 +26,10 @@ export type Region = {
   regionId: RegionId;
   name: string;
 };
+
+export type AccountId = string;
+
+export type Account = {
+  accountId: AccountId;
+  name: string;
+}
