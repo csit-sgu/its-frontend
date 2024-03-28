@@ -3,13 +3,11 @@
 import dayjs from 'dayjs';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { TaskItem } from '@/components/entities/task/task-item';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { EfficiencyMetrics } from '@/components/ui/efficiency-metrics';
 import { AccountId, TaskEntity, TaskType } from '@/domain/types';
 import { useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { AccountPicker } from '@/components/entities/accounts/account-picker';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const incidents: TaskEntity[] = Array.from({ length: 50 }).map((_, i, a) => ({
@@ -30,16 +28,8 @@ const regulars: TaskEntity[] = Array.from({ length: 50 }).map((_, i, a) => ({
 
 export default function ObjectProfilePage() {
   const [accountId, setAccountId] = useState<AccountId>('ALL');
-  // TODO: Соотнести с названиями для типов параметров на беке, когда будет готово API
-  const [taskTypes, setTaskTypes] = useState<TaskType[]>(['incident', 'regular']);
+  const [currentTaskType, setCurrentTaskType] = useState<TaskType | 'all'>('all');
 
-  const toggleTaskType = (taskType: TaskType) => {
-    if (taskTypes.includes(taskType)) {
-      setTaskTypes((v) => v.filter((t) => t !== taskType));
-    } else {
-      setTaskTypes((v) => [...v, taskType]);
-    }
-  };
   return (
     <div className="container">
       <div className="flex flex-col md:flex-row">
@@ -49,7 +39,9 @@ export default function ObjectProfilePage() {
             <CardHeader>
               <CardTitle>Тип объекта</CardTitle>
               <CardDescription>км 4+700 а/д А-149 Адлер-Красная поляна</CardDescription>
-              <CardDescription><b>Обслуживающая компания</b>: ФКУ Упрдор "Черноморье"</CardDescription>
+              <CardDescription>
+                <b>Обслуживающая компания</b>: ФКУ Упрдор "Черноморье"
+              </CardDescription>
             </CardHeader>
           </div>
           <CardContent className="pt-6">
@@ -62,7 +54,7 @@ export default function ObjectProfilePage() {
               10
             </p>
             <p className="text-lg">
-              <b>Интервал плановых работ: </b> <br/>
+              <b>Интервал плановых работ: </b> <br />
               Каждые 30 дней в течении 10 дней
             </p>
           </CardContent>
@@ -79,56 +71,58 @@ export default function ObjectProfilePage() {
               </div>
             </CardContent>
           </Card>
-          <EfficiencyMetrics
-            relative={666}
-            absolute={999}
-          />
+          <EfficiencyMetrics relative={666} absolute={999} />
         </div>
       </div>
-      <Tabs defaultValue="account" className="w-[100%]">
+      <Tabs
+        defaultValue="account"
+        className="w-[100%]"
+        value={currentTaskType}
+        onValueChange={(v) => setCurrentTaskType(v as TaskType | 'all')}
+      >
         <TabsList>
-          <TabsTrigger value="tasks">Все задачи</TabsTrigger>
+          <TabsTrigger value="all">Все задачи</TabsTrigger>
           <TabsTrigger value="incidents">Инциденты</TabsTrigger>
           <TabsTrigger value="regular">Плановые</TabsTrigger>
         </TabsList>
-        <TabsContent value="tasks">
-            {regulars.map((t) => (
-              <TaskItem
-                taskId={t.taskId}
-                accountId={t.accountId}
-                assignerId={t.assignerId}
-                taskableType={t.taskableType}
-                deadlineAt={t.deadlineAt}
-                key={t.accountId}
-                className="mb-5"
-              />
-            ))}
+        <TabsContent value="all">
+          {regulars.map((t) => (
+            <TaskItem
+              taskId={t.taskId}
+              accountId={t.accountId}
+              assignerId={t.assignerId}
+              taskableType={t.taskableType}
+              deadlineAt={t.deadlineAt}
+              key={t.accountId}
+              className="mb-5"
+            />
+          ))}
         </TabsContent>
         <TabsContent value="incidents">
-            {incidents.map((t) => (
-              <TaskItem
-                taskId={t.taskId}
-                accountId={t.accountId}
-                assignerId={t.assignerId}
-                taskableType={t.taskableType}
-                deadlineAt={t.deadlineAt}
-                key={t.accountId}
-                className="mb-5"
-              />
-            ))}
+          {incidents.map((t) => (
+            <TaskItem
+              taskId={t.taskId}
+              accountId={t.accountId}
+              assignerId={t.assignerId}
+              taskableType={t.taskableType}
+              deadlineAt={t.deadlineAt}
+              key={t.accountId}
+              className="mb-5"
+            />
+          ))}
         </TabsContent>
         <TabsContent value="regular">
-            {regulars.map((t) => (
-              <TaskItem
-                taskId={t.taskId}
-                accountId={t.accountId}
-                assignerId={t.assignerId}
-                taskableType={t.taskableType}
-                deadlineAt={t.deadlineAt}
-                key={t.accountId}
-                className="mb-5"
-              />
-            ))}
+          {regulars.map((t) => (
+            <TaskItem
+              taskId={t.taskId}
+              accountId={t.accountId}
+              assignerId={t.assignerId}
+              taskableType={t.taskableType}
+              deadlineAt={t.deadlineAt}
+              key={t.accountId}
+              className="mb-5"
+            />
+          ))}
         </TabsContent>
       </Tabs>
     </div>
