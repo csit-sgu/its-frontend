@@ -51,7 +51,10 @@ export function TaskItem({
           <b>Подрядчик:</b> {accountName}
         </p>
         <p>
-          <b>Создано:</b> {createdBy} в {formatDate(deadlineAt)}
+          <b>Создано:</b> {createdBy}
+        </p>
+        <p>
+          <b>Ожидаемая дата сдачи:</b> {formatDate(deadlineAt)}
         </p>
         <TaskStage className="mt-3" taskId="aboba" />
       </CardContent>
