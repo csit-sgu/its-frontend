@@ -71,7 +71,7 @@ export default function ObjectProfilePage({ params }: { params: { objectId: stri
             </CardHeader>
           </div>
           <CardContent className="pt-6">
-            <p className="text-3xl mb-3">Обслуживание</p>
+            <p className="text-3xl mb-3">Рейтинг обслуживания</p>
             <p className="text-lg">
               <b>Оценка регулярности проведения регламентных работ:</b> {tasksQuery.data?.stats.regularity_score ?? 'НЕИЗВЕСТНО'}
             </p>
