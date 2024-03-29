@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { AccountPicker } from '@/components/entities/accounts/account-picker';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { GoodBadMetrics } from '@/components/ui/good-bad-metrics';
 
 const incidents: TaskEntity[] = Array.from({ length: 50 }).map((_, i, a) => ({
   taskId: i.toString(),
@@ -45,6 +46,7 @@ export default function ObjectProfilePage() {
             </CardHeader>
           </div>
           <CardContent className="pt-6">
+            <p className='text-3xl mb-3'>Обслуживание</p>
             <p className="text-lg">
               <b>Дата последнего обслуживания: </b>
               2024-03-03
@@ -56,6 +58,13 @@ export default function ObjectProfilePage() {
             <p className="text-lg">
               <b>Интервал плановых работ: </b> <br />
               Каждые 30 дней в течении 10 дней
+            </p>
+            <p className='text-3xl my-3'>Эффективность</p>
+            <p className="text-lg">
+              <b>Абсолютная: </b> {123}
+            </p>
+            <p className="text-lg">
+              <b>Относительная: </b> {456}
             </p>
           </CardContent>
         </Card>
@@ -71,7 +80,12 @@ export default function ObjectProfilePage() {
               </div>
             </CardContent>
           </Card>
-          <EfficiencyMetrics relative={666} absolute={999} />
+          <GoodBadMetrics
+            goodPercentage={70}
+            badPercentage={30}
+            size={300}
+            className="w-full md:h-auto"
+          />
         </div>
       </div>
       <Tabs

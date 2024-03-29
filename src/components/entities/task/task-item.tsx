@@ -6,6 +6,7 @@ import { TaskStage } from './task-stage';
 import { TaskStageTimeline } from './task-stage-timeline';
 import { Badge } from '@/components/ui/badge';
 import { formatDate } from '@/lib/utils';
+import Link from 'next/link';
 
 // TODO: Подгружать с бека информацию об подрядчике и создателе задачи
 // TODO: Спросить, откуда берётся title
@@ -60,6 +61,9 @@ export function TaskItem({
       </CardContent>
       <CardFooter>
         <div className="w-[100%]">
+          <Button className="w-[100%] mb-3">
+            <Link href="/objects/1">Открыть страницу объекта</Link>
+          </Button>
           {historyButton}
           {historyIsOpen && <TaskStageTimeline taskId={taskId} className="mt-3" />}
         </div>

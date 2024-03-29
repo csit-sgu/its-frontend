@@ -4,7 +4,7 @@ import { getTasks } from '@/api/endpoints';
 import { AccountPicker } from '@/components/entities/accounts/account-picker';
 import { TaskItem } from '@/components/entities/task/task-item';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { EfficiencyMetrics } from '@/components/ui/efficiency-metrics';
 import { GoodBadMetrics } from '@/components/ui/good-bad-metrics';
@@ -18,6 +18,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AccountId, TaskType } from '@/domain/types';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
@@ -64,9 +65,70 @@ export default function RegionProfile({ params }: { params: { regionId: string }
 
   return (
     <div className="container">
-      <h2 className="font-bold text-2xl text-center mb-3 md:text-4xl lg:mb-0">Саратовская область</h2>
+      <div className="flex flex-col md:flex-row">
+        <Card className="flex flex-col m-3 mt-5 ml-0 w-full md:w-[60%]">
+          <div className="flex flex-col md:flex-row">
+            <img src="/img.png" alt="img" className="m-[30px] size-[100px]" />
+            <CardHeader>
+              <CardTitle className="text-4xl my-auto">Саратовская область</CardTitle>
+            </CardHeader>
+          </div>
+          <CardContent className="pt-6">
+            <p className="text-3xl mb-3">Обслуживание</p>
+            <p className="text-lg">
+              <b>Количество обслуживаемых объектов: </b>
+              1000
+            </p>
+            <p className="text-lg">
+              <b>Количество инцидентов в этом месяце: </b>
+              150
+            </p>
+            <p className="text-3xl my-3">Эффективность</p>
+            <p className="text-lg">
+              <b>Абсолютная: </b> {123}
+            </p>
+            <p className="text-lg">
+              <b>Относительная: </b> {456}
+            </p>
+          </CardContent>
+        </Card>
+        <div className="flex flex-col mt-0 mb-3 w-full md:mt-5 md:w-[40%]">
+          <Card className="mb-3">
+            <CardHeader>
+              <CardTitle>Фильтры</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div>
+                <Label>Организация:</Label>
+                <AccountPicker value={accountId ?? 'ALL'} onChange={(v) => setAccountId(v)} />
+              </div>
+            </CardContent>
+          </Card>
+          <GoodBadMetrics
+              goodPercentage={70}
+              badPercentage={30}
+              size={300}
+              className="w-full lg:w-full md:w-[50%] md:h-auto"
+            />
+        </div>
+      </div>
+      <div className="w-[100%] pr-0 mb-3">
+        <Tabs defaultValue="tasks" className="w-[100%]">
+          <TabsList>
+            <TabsTrigger value="tasks">Все задачи</TabsTrigger>
+            <TabsTrigger value="incidents">Инциденты</TabsTrigger>
+            <TabsTrigger value="regular">Плановые</TabsTrigger>
+          </TabsList>
+          <TabsContent value="tasks">
+          </TabsContent>
+          <TabsContent value="incidents">
+          </TabsContent>
+          <TabsContent value="regular">
+          </TabsContent>
+        </Tabs>
+      </div>
       <div className="flex flex-col-reverse lg:flex-row">
-        <div className="lg:w-[70%] lg:pr-4 w-[100%] pr-0 mb-3">
+        <div className="w-[100%] pr-0 mb-3">
           {tasksQuery.isLoading && (
             <div>
               <Skeleton className="h-[250px] w-[100%] mb-5" />
@@ -111,17 +173,8 @@ export default function RegionProfile({ params }: { params: { regionId: string }
             </ScrollArea>
           )}
         </div>
-        <div className="flex flex-col w-[100%] mb-3 lg:w-[30%] lg:h-screen lg:sticky lg:top-5">
-          <Card className="mb-3">
-            <CardHeader>
-              <CardTitle>Фильтры</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div>
-                <Label>Организация:</Label>
-                <AccountPicker value={accountId ?? 'ALL'} onChange={(v) => setAccountId(v)} />
-              </div>
-              <div className="mt-1">
+
+              {/* <div className="mt-1">
                 <Label>Типы задач:</Label>
                 <div className="flex items-center space-x-2 mb-1">
                   <Checkbox
@@ -149,24 +202,8 @@ export default function RegionProfile({ params }: { params: { regionId: string }
                     Инциденты
                   </label>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-          <div className="flex flex-col md:flex-row lg:flex-col">
-            <EfficiencyMetrics
-              relative={666}
-              absolute={999}
-              className="mb-3 lg:mb-3 lg:w-full md:mb-0 md:w-[50%] md:mr-3 md:h-auto"
-            />
-            <GoodBadMetrics
-              goodPercentage={70}
-              badPercentage={30}
-              size={300}
-              className="w-full lg:w-full md:w-[50%] md:h-auto"
-            />
-          </div>
+              </div> */}
         </div>
-      </div>
     </div>
   );
 }
