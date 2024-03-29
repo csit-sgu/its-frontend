@@ -50,19 +50,16 @@ export default function RegionProfile({ params }: { params: { regionId: string }
           <CardContent className="pt-6">
             <p className="text-3xl mb-3">Обслуживание</p>
             <p className="text-lg">
-              <b>Количество обслуживаемых объектов: </b>
-              1000
+              <b>Оценка регулярности проведения регламентных работ:</b> {tasksQuery.data?.stats.regularity_score ?? 'НЕИЗВЕСТНО'}
             </p>
             <p className="text-lg">
-              <b>Количество инцидентов в этом месяце: </b>
-              150
-            </p>
-            <p className="text-3xl my-3">Эффективность</p>
-            <p className="text-lg">
-              <b>Абсолютная: </b> {123}
+              <b>Скорость устранения инцидентов:</b> {tasksQuery.data?.stats.speed_score ?? 'НЕИЗВЕСТНО'}
             </p>
             <p className="text-lg">
-              <b>Относительная: </b> {456}
+              <b>Оценка повторных инцидентов:</b> {tasksQuery.data?.stats.fallback_rate ?? 'НЕИЗВЕСТНО'}
+            </p>
+            <p className="text-lg">
+              <b>Количество возвратов задач на доработку:</b> {tasksQuery.data?.stats.regularity_score ?? 'НЕИЗВЕСТНО'}
             </p>
           </CardContent>
         </Card>

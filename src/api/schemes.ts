@@ -15,6 +15,12 @@ export const TransitionsInTaskPage = z.array(
 
 export const TaskPageScheme = z.object({
   total_pages: z.number(),
+  stats: z.object({
+    fallback_rate: z.number(),
+    regularity_score: z.number(),
+    remission_rate: z.number(),
+    speed_score: z.number(),
+  }),
   data: z.array(
     z.object({
       task_id: z.number(),

@@ -73,23 +73,16 @@ export default function ObjectProfilePage({ params }: { params: { objectId: stri
           <CardContent className="pt-6">
             <p className="text-3xl mb-3">Обслуживание</p>
             <p className="text-lg">
-              <b>Дата последнего обслуживания: </b>
-              2024-03-03
+              <b>Оценка регулярности проведения регламентных работ:</b> {tasksQuery.data?.stats.regularity_score ?? 'НЕИЗВЕСТНО'}
             </p>
             <p className="text-lg">
-              <b>Количество инцидентов с последнего обслуживания: </b>
-              10
+              <b>Скорость устранения инцидентов:</b> {tasksQuery.data?.stats.speed_score ?? 'НЕИЗВЕСТНО'}
             </p>
             <p className="text-lg">
-              <b>Интервал плановых работ: </b> <br />
-              Каждые 30 дней в течении 10 дней
-            </p>
-            <p className="text-3xl my-3">Эффективность</p>
-            <p className="text-lg">
-              <b>Абсолютная: </b> {123}
+              <b>Оценка повторных инцидентов:</b> {tasksQuery.data?.stats.fallback_rate ?? 'НЕИЗВЕСТНО'}
             </p>
             <p className="text-lg">
-              <b>Относительная: </b> {456}
+              <b>Количество возвратов задач на доработку:</b> {tasksQuery.data?.stats.regularity_score ?? 'НЕИЗВЕСТНО'}
             </p>
           </CardContent>
         </Card>
