@@ -36,7 +36,7 @@ export default function RegionPickerPage() {
       <Rusmap
         setChosen={setChosenReg}
         className="hidden md:block"
-        onClick={() => router.push(`/regions/${chosenReg?.regionId}`)}
+        onClick={() => router.push(`/regions/${chosenReg?.regionId}?regionname=${chosenReg?.name}`)}
       />
       <SearchInput
         placeholder="Поиск региона"

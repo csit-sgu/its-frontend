@@ -23,6 +23,7 @@ export default function RegionProfile({ params }: { params: { regionId: string }
   const [taskType, setTaskType] = useState<TaskType | 'incident,regular'>('incident,regular');
 
   const page = parseInt(searchParams.get('page') ?? '0');
+  const region_name = searchParams.get('regionname') ?? 'Саратовская область';
 
   const tasksQuery = useQuery({
     queryKey: ['tasks', page, taskType],
@@ -43,7 +44,7 @@ export default function RegionProfile({ params }: { params: { regionId: string }
           <div className="flex flex-col md:flex-row">
             <img src="/img.png" alt="img" className="m-[30px] size-[100px]" />
             <CardHeader>
-              <CardTitle className="text-4xl my-auto">Саратовская область</CardTitle>
+              <CardTitle className="text-4xl my-auto">{region_name}</CardTitle>
             </CardHeader>
           </div>
           <CardContent className="pt-6">
