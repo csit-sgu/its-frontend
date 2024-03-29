@@ -23,3 +23,7 @@ export async function getTransitionsForTask(taskId: number): Promise<z.infer<typ
   }
   return result.data;
 }
+
+export function getTaskStages(taskId: number): Promise<string[]> {
+  return axios.get(`/tasks/${taskId}/stages/traverse`).then((r) => r.data); 
+}

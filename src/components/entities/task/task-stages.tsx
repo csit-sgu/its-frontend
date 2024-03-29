@@ -1,27 +1,40 @@
+import { getTaskStages } from '@/api/endpoints';
 import {
   Breadcrumb,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import { Skeleton } from '@/components/ui/skeleton';
+import { TaskId } from '@/domain/types';
 import { cn } from '@/lib/utils';
+import { useQuery } from '@tanstack/react-query';
 import { ComponentPropsWithoutRef, forwardRef } from 'react';
 
 export function TaskStages({
-  stages,
+  taskId,
   className,
 }: {
-  stages: string[];
+  taskId: TaskId;
   className: string;
 }) {
+  const stagesQuery = useQuery({
+    queryKey: ['task-stages', taskId],
+    queryFn: () => getTaskStages(parseInt(taskId)),
+  })
+
+
   return (
     <div className={className}>
       <Breadcrumb>
         <BreadcrumbList>
-          {stages.map((t, i) => (
+          {stagesQuery.isLoading && (
+            <Skeleton className="w-full h-[20px]" />
+          )}
+          {stagesQuery.isFetched && stagesQuery.data?.map((t, i) => (
             <>
               <StageItem active={false}>{t}</StageItem>
-              { i !== stages.length - 1 && (
+              { i !== stagesQuery.data?.length - 1 && (
                 <BreadcrumbSeparator />
               ) }
             </>

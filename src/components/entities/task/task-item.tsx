@@ -60,7 +60,7 @@ export function TaskItem({
         <p>
           <b>Ожидаемая дата сдачи:</b> {formatDate(deadlineAt)}
         </p>
-        <TaskStages className="mt-3" stages={stages} />
+        <TaskStages className="mt-3" taskId={taskId} />
       </CardContent>
       <CardFooter>
         <div className="w-[100%]">
