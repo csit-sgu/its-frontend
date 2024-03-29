@@ -81,7 +81,7 @@ export default function RegionProfile({ params }: { params: { regionId: string }
             goodPercentage={70}
             badPercentage={30}
             size={300}
-            className="w-full lg:w-full md:w-[50%] md:h-auto"
+            className="w-full md:h-auto"
           />
         </div>
       </div>
