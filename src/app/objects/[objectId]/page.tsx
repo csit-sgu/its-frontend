@@ -3,7 +3,6 @@
 import dayjs from 'dayjs';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { TaskItem } from '@/components/entities/task/task-item';
-import { EfficiencyMetrics } from '@/components/ui/efficiency-metrics';
 import { AccountId, TaskEntity, TaskType } from '@/domain/types';
 import { useState } from 'react';
 import { Label } from '@/components/ui/label';
@@ -13,18 +12,22 @@ import { GoodBadMetrics } from '@/components/ui/good-bad-metrics';
 
 const incidents: TaskEntity[] = Array.from({ length: 50 }).map((_, i, a) => ({
   taskId: i.toString(),
-  accountId: 'r',
-  assignerId: 't',
   taskableType: 'incident',
   deadlineAt: dayjs(),
+  createdBy: 'ООО "Компания"',
+  accountName: 'Иванов Иван Иванович',
+  objectId: '123',
+  stages: ['Создано', 'Выполняется', 'Закрыто'],
 }));
 
 const regulars: TaskEntity[] = Array.from({ length: 50 }).map((_, i, a) => ({
   taskId: i.toString(),
-  accountId: 'r',
-  assignerId: 't',
   taskableType: 'regular',
   deadlineAt: dayjs(),
+  createdBy: 'ООО "Компания"',
+  accountName: 'Иванов Иван Иванович',
+  stages: ['Создано', 'Выполняется', 'Закрыто'],
+  objectId: '123',
 }));
 
 export default function ObjectProfilePage() {
@@ -46,7 +49,7 @@ export default function ObjectProfilePage() {
             </CardHeader>
           </div>
           <CardContent className="pt-6">
-            <p className='text-3xl mb-3'>Обслуживание</p>
+            <p className="text-3xl mb-3">Обслуживание</p>
             <p className="text-lg">
               <b>Дата последнего обслуживания: </b>
               2024-03-03
@@ -59,7 +62,7 @@ export default function ObjectProfilePage() {
               <b>Интервал плановых работ: </b> <br />
               Каждые 30 дней в течении 10 дней
             </p>
-            <p className='text-3xl my-3'>Эффективность</p>
+            <p className="text-3xl my-3">Эффективность</p>
             <p className="text-lg">
               <b>Абсолютная: </b> {123}
             </p>
@@ -102,12 +105,14 @@ export default function ObjectProfilePage() {
           {regulars.map((t) => (
             <TaskItem
               taskId={t.taskId}
-              accountId={t.accountId}
-              assignerId={t.assignerId}
               taskableType={t.taskableType}
               deadlineAt={t.deadlineAt}
-              key={t.accountId}
+              key={t.taskId}
               className="mb-5"
+              createdBy={t.createdBy}
+              accountName={t.accountName}
+              objectId={t.objectId}
+              stages={t.stages}
             />
           ))}
         </TabsContent>
@@ -115,12 +120,14 @@ export default function ObjectProfilePage() {
           {incidents.map((t) => (
             <TaskItem
               taskId={t.taskId}
-              accountId={t.accountId}
-              assignerId={t.assignerId}
               taskableType={t.taskableType}
               deadlineAt={t.deadlineAt}
-              key={t.accountId}
+              key={t.taskId}
               className="mb-5"
+              createdBy={t.createdBy}
+              accountName={t.accountName}
+              objectId={t.objectId}
+              stages={t.stages}
             />
           ))}
         </TabsContent>
@@ -128,12 +135,14 @@ export default function ObjectProfilePage() {
           {regulars.map((t) => (
             <TaskItem
               taskId={t.taskId}
-              accountId={t.accountId}
-              assignerId={t.assignerId}
               taskableType={t.taskableType}
               deadlineAt={t.deadlineAt}
-              key={t.accountId}
+              key={t.taskId}
               className="mb-5"
+              createdBy={t.createdBy}
+              accountName={t.accountName}
+              objectId={t.objectId}
+              stages={t.stages}
             />
           ))}
         </TabsContent>
