@@ -5,20 +5,11 @@ import { AccountPicker } from '@/components/entities/accounts/account-picker';
 import { TaskItem } from '@/components/entities/task/task-item';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { EfficiencyMetrics } from '@/components/ui/efficiency-metrics';
 import { GoodBadMetrics } from '@/components/ui/good-bad-metrics';
 import { Label } from '@/components/ui/label';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AccountId, TaskType } from '@/domain/types';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
@@ -26,42 +17,24 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
-function processTaskTypesParam(param: string | null): TaskType[] {
-  return (
-    (param?.split(',').filter((t) => ['incident', 'regular'].includes(t)) as TaskType[]) ?? [
-      'incident',
-      'regular',
-    ]
-  );
-}
-
 export default function RegionProfile({ params }: { params: { regionId: string } }) {
   const searchParams = useSearchParams();
   const [accountId, setAccountId] = useState<AccountId>('ALL');
-  // TODO: Соотнести с названиями для типов параметров на беке, когда будет готово API
-  const [taskTypes, setTaskTypes] = useState<TaskType[]>(['incident', 'regular']);
+  const [taskType, setTaskType] = useState<TaskType | 'incident,regular'>('incident,regular');
 
   const page = parseInt(searchParams.get('page') ?? '0');
 
   const tasksQuery = useQuery({
-    queryKey: ['tasks', page],
+    queryKey: ['tasks', page, taskType],
     queryFn: () =>
       getTasks({
         page,
         size: 10,
         region_id: parseInt(params.regionId),
-        task_types: taskTypes.join(','),
+        task_types: taskType,
         account_id: accountId === 'ALL' ? undefined : parseInt(accountId),
       }),
   });
-
-  const toggleTaskType = (taskType: TaskType) => {
-    if (taskTypes.includes(taskType)) {
-      setTaskTypes((v) => v.filter((t) => t !== taskType));
-    } else {
-      setTaskTypes((v) => [...v, taskType]);
-    }
-  };
 
   return (
     <div className="container">
@@ -105,28 +78,14 @@ export default function RegionProfile({ params }: { params: { regionId: string }
             </CardContent>
           </Card>
           <GoodBadMetrics
-              goodPercentage={70}
-              badPercentage={30}
-              size={300}
-              className="w-full lg:w-full md:w-[50%] md:h-auto"
-            />
+            goodPercentage={70}
+            badPercentage={30}
+            size={300}
+            className="w-full lg:w-full md:w-[50%] md:h-auto"
+          />
         </div>
       </div>
-      <div className="w-[100%] pr-0 mb-3">
-        <Tabs defaultValue="tasks" className="w-[100%]">
-          <TabsList>
-            <TabsTrigger value="tasks">Все задачи</TabsTrigger>
-            <TabsTrigger value="incidents">Инциденты</TabsTrigger>
-            <TabsTrigger value="regular">Плановые</TabsTrigger>
-          </TabsList>
-          <TabsContent value="tasks">
-          </TabsContent>
-          <TabsContent value="incidents">
-          </TabsContent>
-          <TabsContent value="regular">
-          </TabsContent>
-        </Tabs>
-      </div>
+      <div className="w-[100%] pr-0 mb-3"></div>
       <div className="flex flex-col-reverse lg:flex-row">
         <div className="w-[100%] pr-0 mb-3">
           {tasksQuery.isLoading && (
@@ -136,7 +95,18 @@ export default function RegionProfile({ params }: { params: { regionId: string }
             </div>
           )}
           {tasksQuery.isFetched && (
-            <ScrollArea className="w-[100%] rounded-md border p-4">
+            <div className="w-[100%]">
+              <Tabs
+                value={taskType}
+                onValueChange={(v) => setTaskType(v as TaskType | 'incident,regular')}
+                className="w-[100%] mb-3"
+              >
+                <TabsList>
+                  <TabsTrigger value="incident,regular">Все задачи</TabsTrigger>
+                  <TabsTrigger value="incident">Инциденты</TabsTrigger>
+                  <TabsTrigger value="regular">Плановые</TabsTrigger>
+                </TabsList>
+              </Tabs>
               {tasksQuery.data?.data.map((t) => (
                 <TaskItem
                   key={t.task_id}
@@ -146,6 +116,8 @@ export default function RegionProfile({ params }: { params: { regionId: string }
                   className="mb-5"
                   createdBy={'Иванов Иван Иванович'}
                   accountName={'ООО "Мясо и рыба"'}
+                  objectId={t.object.object_id.toString()}
+                  stages={t.transitions.map((t) => t.status)}
                 />
               ))}
               <Separator />
@@ -170,40 +142,10 @@ export default function RegionProfile({ params }: { params: { regionId: string }
                   </Link>
                 )}
               </div>
-            </ScrollArea>
+            </div>
           )}
         </div>
-
-              {/* <div className="mt-1">
-                <Label>Типы задач:</Label>
-                <div className="flex items-center space-x-2 mb-1">
-                  <Checkbox
-                    id="regular-task-type"
-                    checked={taskTypes.includes('regular')}
-                    onClick={() => toggleTaskType('regular')}
-                  />
-                  <label
-                    htmlFor="regular-task-type"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Регулярные
-                  </label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="incident-task-type"
-                    checked={taskTypes.includes('incident')}
-                    onClick={() => toggleTaskType('incident')}
-                  />
-                  <label
-                    htmlFor="incident-task-type"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Инциденты
-                  </label>
-                </div>
-              </div> */}
-        </div>
+      </div>
     </div>
   );
 }

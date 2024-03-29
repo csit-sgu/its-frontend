@@ -4,18 +4,17 @@ import { TaskId, TaskTransition } from '@/domain/types';
 import { formatDate } from '@/lib/utils';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
-
-// TODO: Сделать форматирование даты в стиле (3 минуты назад, 1 час назад...) dayjs-plugin-relative-time
+import { useQuery } from '@tanstack/react-query';
+import { getTransitionsForTask } from '@/api/endpoints';
 
 export function TaskStageTimeline({
   taskId,
   ...props
 }: { taskId: TaskId } & Record<string, string>) {
-  const transitions: TaskTransition[] = [
-    { taskId: '1', taskStageId: 'created', transitionedAt: dayjs() },
-    { taskId: '2', taskStageId: 'appointed_account', transitionedAt: dayjs() },
-    { taskId: '3', taskStageId: 'work', transitionedAt: dayjs() },
-  ];
+  const transitionsQuery = useQuery({
+    queryKey: ['transitions', taskId],
+    queryFn: () => getTransitionsForTask(parseInt(taskId)),
+  });
 
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -29,24 +28,29 @@ export function TaskStageTimeline({
         <CardTitle>История изменений статуса</CardTitle>
       </CardHeader>
       <CardContent>
-        {loading ? (
+        {transitionsQuery.isLoading && (
           <div>
             <Skeleton className="h-[98px] w-[100%] mb-3" />
             <Skeleton className="h-[98px] w-[100%] mb-3" />
             <Skeleton className="h-[98px] w-[100%] mb-3" />
           </div>
-        ) : (
-          transitions.map((t) => (
+        )}
+        {transitionsQuery.isFetched &&
+          transitionsQuery.data?.map((t) => (
             <Card className="mb-3">
               <CardHeader>
-                <CardTitle>Происходит абоба</CardTitle>
+                <CardTitle>{t.stage_title}</CardTitle>
                 <CardDescription>
-                  <b>Сделано</b>: {formatDate(t.transitionedAt)}
+                  <p>
+                    <b>Дата перехода</b>: {formatDate(dayjs(t.transitioned_at))}
+                  </p>
+                  <p>
+                    <b>Переведено</b>: {t.transitioned_by}
+                  </p>
                 </CardDescription>
               </CardHeader>
             </Card>
-          ))
-        )}
+          ))}
       </CardContent>
     </Card>
   );

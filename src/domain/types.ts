@@ -12,6 +12,8 @@ export type TaskEntity = {
   createdBy: string;
   accountName: string;
   deadlineAt: dayjs.Dayjs;
+  objectId: string;
+  stages: string[];
 };
 
 export type TaskTransition = {

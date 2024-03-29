@@ -2,7 +2,7 @@ import { TaskEntity, TaskType } from '@/domain/types';
 import { useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { TaskStage } from './task-stage';
+import { TaskStages } from './task-stages';
 import { TaskStageTimeline } from './task-stage-timeline';
 import { Badge } from '@/components/ui/badge';
 import { formatDate } from '@/lib/utils';
@@ -28,6 +28,8 @@ export function TaskItem({
   accountName,
   createdBy,
   className,
+  objectId,
+  stages,
 }: TaskEntity & { className?: string }) {
   const [historyIsOpen, setHistoryIsOpen] = useState<boolean>(false);
 
@@ -57,12 +59,12 @@ export function TaskItem({
         <p>
           <b>Ожидаемая дата сдачи:</b> {formatDate(deadlineAt)}
         </p>
-        <TaskStage className="mt-3" taskId="aboba" />
+        <TaskStages className="mt-3" stages={stages} />
       </CardContent>
       <CardFooter>
         <div className="w-[100%]">
           <Button className="w-[100%] mb-3">
-            <Link href="/objects/1">Открыть страницу объекта</Link>
+            <Link href={`/objects/${objectId}`}>Открыть страницу объекта</Link>
           </Button>
           {historyButton}
           {historyIsOpen && <TaskStageTimeline taskId={taskId} className="mt-3" />}
