@@ -133,7 +133,7 @@ export default function RegionProfile({ params }: { params: { regionId: string }
                   </Link>
                 )}
                 <Button disabled={true} className="mr-2">
-                  {page + 1} / {(tasksQuery.data?.total_pages ?? 0) + 1}
+                  {page + 1} / {(tasksQuery.data?.total_pages ?? 0)}
                 </Button>
                 {page < (tasksQuery.data?.total_pages ?? 0) - 1 && (
                   <Link
