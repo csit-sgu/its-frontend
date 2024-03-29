@@ -8,9 +8,9 @@ export type TaskStage = 'created' | 'appointed_account' | 'work' | 'work_complet
 
 export type TaskEntity = {
   taskId: TaskId;
-  accountId: string;
-  assignerId: string;
   taskableType: TaskType;
+  createdBy: string;
+  accountName: string;
   deadlineAt: dayjs.Dayjs;
 };
 

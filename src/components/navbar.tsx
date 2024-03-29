@@ -3,10 +3,10 @@
  * @see https://v0.dev/t/CowzfwdSDEY
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { SheetTrigger, SheetContent, Sheet, SheetClose } from "@/components/ui/sheet"
-import Image from 'next/image'
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { SheetTrigger, SheetContent, Sheet, SheetClose } from '@/components/ui/sheet';
+import Image from 'next/image';
 
 export default function Navbar() {
   return (
@@ -40,7 +40,10 @@ export default function Navbar() {
               </Link>
             </SheetClose>
             <SheetClose asChild>
-              <Link className="text-lg font-medium hover:underline underline-offset-4" href="/login">
+              <Link
+                className="text-lg font-medium hover:underline underline-offset-4"
+                href="/login"
+              >
                 Выход
               </Link>
             </SheetClose>
@@ -52,9 +55,7 @@ export default function Navbar() {
 }
 
 function LogoIcon(props) {
-  return (
-      <Image {...props} src="/logo.svg" width="50" height="50" alt="Logo" />
-  )
+  return <Image {...props} src="/logo.svg" width="50" height="50" alt="Logo" />;
 }
 
 function MenuIcon(props) {
@@ -75,5 +76,5 @@ function MenuIcon(props) {
       <line x1="4" x2="20" y1="6" y2="6" />
       <line x1="4" x2="20" y1="18" y2="18" />
     </svg>
-  )
+  );
 }

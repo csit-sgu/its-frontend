@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { TaskStage } from './task-stage';
 import { TaskStageTimeline } from './task-stage-timeline';
 import { Badge } from '@/components/ui/badge';
+import { formatDate } from '@/lib/utils';
 
 // TODO: Подгружать с бека информацию об подрядчике и создателе задачи
 // TODO: Спросить, откуда берётся title
@@ -21,10 +22,10 @@ const badgeText: Record<TaskType, string> = {
 
 export function TaskItem({
   taskId,
-  accountId,
-  assignerId,
   taskableType,
   deadlineAt,
+  accountName,
+  createdBy,
   className,
 }: TaskEntity & { className?: string }) {
   const [historyIsOpen, setHistoryIsOpen] = useState<boolean>(false);
@@ -42,15 +43,15 @@ export function TaskItem({
   return (
     <Card className={className}>
       <CardHeader className="flex flex-row justify-between">
-        <CardTitle>Задача 1</CardTitle>
+        <CardTitle>Задача</CardTitle>
         <Badge variant={badgeVariant[taskableType]}>{badgeText[taskableType]}</Badge>
       </CardHeader>
       <CardContent>
         <p>
-          <b>Подрядчик:</b> ООО "Абоба"
+          <b>Подрядчик:</b> {accountName}
         </p>
         <p>
-          <b>Создано:</b> Иванов Иван Иванович
+          <b>Создано:</b> {createdBy} в {formatDate(deadlineAt)}
         </p>
         <TaskStage className="mt-3" taskId="aboba" />
       </CardContent>
