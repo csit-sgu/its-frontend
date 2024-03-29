@@ -15,6 +15,7 @@ import { getTasks } from '@/api/endpoints';
 import { Separator } from '@/components/ui/separator';
 import Link from 'next/link';
 import { Button, buttonVariants } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const incidents: TaskEntity[] = Array.from({ length: 50 }).map((_, i, a) => ({
   taskId: i.toString(),
@@ -124,21 +125,29 @@ export default function ObjectProfilePage({ params }: { params: { objectId: stri
             <TabsTrigger value="regular">Плановые</TabsTrigger>
           </TabsList>
         </Tabs>
-        {tasksQuery.data?.data.map((t) => (
-          <TaskItem
-            key={t.task_id}
-            taskId={t.task_id.toString()}
-            taskableType={t.task_type}
-            deadlineAt={dayjs(t.deadline_at)}
-            className="mb-5"
-            createdBy={'Иванов Иван Иванович'}
-            accountName={'ООО "Мясо и рыба"'}
-            objectId={t.object.object_id.toString()}
-            stages={t.transitions.map((t) => t.status)} 
-            showObjectButton={false}          />
-        ))}
+        {tasksQuery.isFetched &&
+          tasksQuery.data?.data.map((t) => (
+            <TaskItem
+              key={t.task_id}
+              taskId={t.task_id.toString()}
+              taskableType={t.task_type}
+              deadlineAt={dayjs(t.deadline_at)}
+              className="mb-5"
+              createdBy={'Иванов Иван Иванович'}
+              accountName={'ООО "Мясо и рыба"'}
+              objectId={t.object.object_id.toString()}
+              stages={t.transitions.map((t) => t.status)}
+              showObjectButton={false}
+            />
+          ))}
+        {tasksQuery.isLoading && (
+          <div>
+            <Skeleton className="h-[250px] w-[100%] mb-5" />
+            <Skeleton className="h-[250px] w-[100%]" />
+          </div>
+        )}
         <Separator />
-        <div className="mt-5 flex">
+        <div className="mt-5 mb-5 flex">
           {page !== 0 && (
             <Link
               href={`/objects/${params.objectId}?page=${page - 1}`}

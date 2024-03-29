@@ -89,6 +89,17 @@ export default function RegionProfile({ params }: { params: { regionId: string }
       <div className="w-[100%] pr-0 mb-3"></div>
       <div className="flex flex-col-reverse lg:flex-row">
         <div className="w-[100%] pr-0 mb-3">
+          <Tabs
+            value={taskType}
+            onValueChange={(v) => setTaskType(v as TaskType | 'incident,regular')}
+            className="w-[100%] mb-3"
+          >
+            <TabsList>
+              <TabsTrigger value="incident,regular">Все задачи</TabsTrigger>
+              <TabsTrigger value="incident">Инциденты</TabsTrigger>
+              <TabsTrigger value="regular">Плановые</TabsTrigger>
+            </TabsList>
+          </Tabs>
           {tasksQuery.isLoading && (
             <div>
               <Skeleton className="h-[250px] w-[100%] mb-5" />
@@ -97,17 +108,6 @@ export default function RegionProfile({ params }: { params: { regionId: string }
           )}
           {tasksQuery.isFetched && (
             <div className="w-[100%]">
-              <Tabs
-                value={taskType}
-                onValueChange={(v) => setTaskType(v as TaskType | 'incident,regular')}
-                className="w-[100%] mb-3"
-              >
-                <TabsList>
-                  <TabsTrigger value="incident,regular">Все задачи</TabsTrigger>
-                  <TabsTrigger value="incident">Инциденты</TabsTrigger>
-                  <TabsTrigger value="regular">Плановые</TabsTrigger>
-                </TabsList>
-              </Tabs>
               {tasksQuery.data?.data.map((t) => (
                 <TaskItem
                   key={t.task_id}
@@ -123,7 +123,7 @@ export default function RegionProfile({ params }: { params: { regionId: string }
                 />
               ))}
               <Separator />
-              <div className="mt-5 flex">
+              <div className="mt-5 mb-5 flex">
                 {page !== 0 && (
                   <Link
                     href={`/regions/${params.regionId}?page=${page - 1}`}
@@ -133,7 +133,7 @@ export default function RegionProfile({ params }: { params: { regionId: string }
                   </Link>
                 )}
                 <Button disabled={true} className="mr-2">
-                  {page + 1} / {(tasksQuery.data?.total_pages ?? 0)}
+                  {page + 1} / {tasksQuery.data?.total_pages ?? 0}
                 </Button>
                 {page < (tasksQuery.data?.total_pages ?? 0) - 1 && (
                   <Link
