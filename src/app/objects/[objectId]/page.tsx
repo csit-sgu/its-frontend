@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { AccountPicker } from '@/components/entities/accounts/account-picker';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { GoodBadMetrics } from '@/components/ui/good-bad-metrics';
 
 const incidents: TaskEntity[] = Array.from({ length: 50 }).map((_, i, a) => ({
   taskId: i.toString(),
@@ -49,10 +50,13 @@ export default function ObjectProfilePage() {
             <CardHeader>
               <CardTitle>Тип объекта</CardTitle>
               <CardDescription>км 4+700 а/д А-149 Адлер-Красная поляна</CardDescription>
-              <CardDescription><b>Обслуживающая компания</b>: ФКУ Упрдор "Черноморье"</CardDescription>
+              <CardDescription>
+                <b>Обслуживающая компания</b>: ФКУ Упрдор "Черноморье"
+              </CardDescription>
             </CardHeader>
           </div>
           <CardContent className="pt-6">
+            <p className='text-3xl mb-3'>Обслуживание</p>
             <p className="text-lg">
               <b>Дата последнего обслуживания: </b>
               2024-03-03
@@ -62,8 +66,15 @@ export default function ObjectProfilePage() {
               10
             </p>
             <p className="text-lg">
-              <b>Интервал плановых работ: </b> <br/>
+              <b>Интервал плановых работ: </b> <br />
               Каждые 30 дней в течении 10 дней
+            </p>
+            <p className='text-3xl my-3'>Эффективность</p>
+            <p className="text-lg">
+              <b>Абсолютная: </b> {123}
+            </p>
+            <p className="text-lg">
+              <b>Относительная: </b> {456}
             </p>
           </CardContent>
         </Card>
@@ -79,9 +90,11 @@ export default function ObjectProfilePage() {
               </div>
             </CardContent>
           </Card>
-          <EfficiencyMetrics
-            relative={666}
-            absolute={999}
+          <GoodBadMetrics
+            goodPercentage={70}
+            badPercentage={30}
+            size={300}
+            className="w-full md:h-auto"
           />
         </div>
       </div>
@@ -92,43 +105,43 @@ export default function ObjectProfilePage() {
           <TabsTrigger value="regular">Плановые</TabsTrigger>
         </TabsList>
         <TabsContent value="tasks">
-            {regulars.map((t) => (
-              <TaskItem
-                taskId={t.taskId}
-                accountId={t.accountId}
-                assignerId={t.assignerId}
-                taskableType={t.taskableType}
-                deadlineAt={t.deadlineAt}
-                key={t.accountId}
-                className="mb-5"
-              />
-            ))}
+          {regulars.map((t) => (
+            <TaskItem
+              taskId={t.taskId}
+              accountId={t.accountId}
+              assignerId={t.assignerId}
+              taskableType={t.taskableType}
+              deadlineAt={t.deadlineAt}
+              key={t.accountId}
+              className="mb-5"
+            />
+          ))}
         </TabsContent>
         <TabsContent value="incidents">
-            {incidents.map((t) => (
-              <TaskItem
-                taskId={t.taskId}
-                accountId={t.accountId}
-                assignerId={t.assignerId}
-                taskableType={t.taskableType}
-                deadlineAt={t.deadlineAt}
-                key={t.accountId}
-                className="mb-5"
-              />
-            ))}
+          {incidents.map((t) => (
+            <TaskItem
+              taskId={t.taskId}
+              accountId={t.accountId}
+              assignerId={t.assignerId}
+              taskableType={t.taskableType}
+              deadlineAt={t.deadlineAt}
+              key={t.accountId}
+              className="mb-5"
+            />
+          ))}
         </TabsContent>
         <TabsContent value="regular">
-            {regulars.map((t) => (
-              <TaskItem
-                taskId={t.taskId}
-                accountId={t.accountId}
-                assignerId={t.assignerId}
-                taskableType={t.taskableType}
-                deadlineAt={t.deadlineAt}
-                key={t.accountId}
-                className="mb-5"
-              />
-            ))}
+          {regulars.map((t) => (
+            <TaskItem
+              taskId={t.taskId}
+              accountId={t.accountId}
+              assignerId={t.assignerId}
+              taskableType={t.taskableType}
+              deadlineAt={t.deadlineAt}
+              key={t.accountId}
+              className="mb-5"
+            />
+          ))}
         </TabsContent>
       </Tabs>
     </div>
