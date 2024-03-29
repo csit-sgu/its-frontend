@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const TransitionsInTaskPage = z.array(
   z.object({
     status: z.string(),
-    timestamp: z.string().datetime({ offset: true }),
+    transitioned_at: z.string().datetime({ offset: true }),
     stage_info: z.object({
       is_start: z.boolean(),
       is_fulfilled: z.boolean(),
@@ -30,7 +30,7 @@ export const TaskPageScheme = z.object({
         region_id: z.number(),
         region_title: z.string(),
       }),
-      deadline: z.string().datetime({ offset: true }),
+      deadline_at: z.string().datetime({ offset: true }),
     }),
   ),
 });

@@ -7,9 +7,19 @@ import { TaskPageScheme, TaskTransitions } from './schemes';
 axios.defaults.baseURL = BASE_URL;
 
 export async function getTasks(params: GetTasksParams): Promise<z.infer<typeof TaskPageScheme>> {
-  return TaskPageScheme.parse(await axios.get('/tasks', { params }).then((r) => r.data));
+  const result = TaskPageScheme.safeParse(await axios.get('/tasks', { params }).then((r) => r.data));
+  if (!result.success) {
+    console.error(result.error);
+    throw result.error;
+  }
+  return result.data;
 }
 
 export async function getTransitionsForTask(taskId: number): Promise<z.infer<typeof TaskTransitions>> {
-  return TaskTransitions.parse(await axios.get(`/transitions/${taskId}`).then((r) => r.data));
+  const result = TaskTransitions.safeParse(await axios.get(`/transitions/${taskId}`).then((r) => r.data));
+  if (!result.success) {
+    console.error(result.error);
+    throw result.error;
+  }
+  return result.data;
 }

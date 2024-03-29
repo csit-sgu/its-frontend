@@ -8,7 +8,7 @@ export function mapTaskPageSchemeToEntities(scheme: z.infer<typeof TaskPageSchem
     taskId: t.task_id.toString(),
     accountId: 'mockaboba',
     assignerId: 'mockaboba',
-    deadlineAt: dayjs(t.deadline),
+    deadlineAt: dayjs(t.deadline_at),
     taskableType: t.task_type,
   }));
 }

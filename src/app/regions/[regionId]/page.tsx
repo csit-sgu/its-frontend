@@ -112,7 +112,7 @@ export default function RegionProfile({ params }: { params: { regionId: string }
                   key={t.task_id}
                   taskId={t.task_id.toString()}
                   taskableType={t.task_type}
-                  deadlineAt={dayjs(t.deadline)}
+                  deadlineAt={dayjs(t.deadline_at)}
                   className="mb-5"
                   createdBy={'Иванов Иван Иванович'}
                   accountName={'ООО "Мясо и рыба"'}
