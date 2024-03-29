@@ -9,6 +9,12 @@ import { Label } from '@/components/ui/label';
 import { AccountPicker } from '@/components/entities/accounts/account-picker';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { GoodBadMetrics } from '@/components/ui/good-bad-metrics';
+import { useSearchParams } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { getTasks } from '@/api/endpoints';
+import { Separator } from '@/components/ui/separator';
+import Link from 'next/link';
+import { Button, buttonVariants } from '@/components/ui/button';
 
 const incidents: TaskEntity[] = Array.from({ length: 50 }).map((_, i, a) => ({
   taskId: i.toString(),
@@ -30,9 +36,24 @@ const regulars: TaskEntity[] = Array.from({ length: 50 }).map((_, i, a) => ({
   objectId: '123',
 }));
 
-export default function ObjectProfilePage() {
+export default function ObjectProfilePage({ params }: { params: { objectId: string } }) {
+  const searchParams = useSearchParams();
   const [accountId, setAccountId] = useState<AccountId>('ALL');
-  const [currentTaskType, setCurrentTaskType] = useState<TaskType | 'all'>('all');
+  const [taskType, setTaskType] = useState<TaskType | 'incident,regular'>('incident,regular');
+
+  const page = parseInt(searchParams.get('page') ?? '0');
+
+  const tasksQuery = useQuery({
+    queryKey: ['tasks', page, taskType],
+    queryFn: () =>
+      getTasks({
+        page,
+        size: 10,
+        task_types: taskType,
+        object_ids: params.objectId,
+        account_id: accountId === 'ALL' ? undefined : parseInt(accountId),
+      }),
+  });
 
   return (
     <div className="container">
@@ -91,62 +112,54 @@ export default function ObjectProfilePage() {
           />
         </div>
       </div>
-      <Tabs
-        className="w-[100%]"
-        value={currentTaskType}
-        onValueChange={(v) => setCurrentTaskType(v as TaskType | 'all')}
-      >
-        <TabsList>
-          <TabsTrigger value="all">Все задачи</TabsTrigger>
-          <TabsTrigger value="incidents">Инциденты</TabsTrigger>
-          <TabsTrigger value="regular">Плановые</TabsTrigger>
-        </TabsList>
-        <TabsContent value="all">
-          {regulars.map((t) => (
-            <TaskItem
-              taskId={t.taskId}
-              taskableType={t.taskableType}
-              deadlineAt={t.deadlineAt}
-              key={t.taskId}
-              className="mb-5"
-              createdBy={t.createdBy}
-              accountName={t.accountName}
-              objectId={t.objectId}
-              stages={t.stages}
-            />
-          ))}
-        </TabsContent>
-        <TabsContent value="incidents">
-          {incidents.map((t) => (
-            <TaskItem
-              taskId={t.taskId}
-              taskableType={t.taskableType}
-              deadlineAt={t.deadlineAt}
-              key={t.taskId}
-              className="mb-5"
-              createdBy={t.createdBy}
-              accountName={t.accountName}
-              objectId={t.objectId}
-              stages={t.stages}
-            />
-          ))}
-        </TabsContent>
-        <TabsContent value="regular">
-          {regulars.map((t) => (
-            <TaskItem
-              taskId={t.taskId}
-              taskableType={t.taskableType}
-              deadlineAt={t.deadlineAt}
-              key={t.taskId}
-              className="mb-5"
-              createdBy={t.createdBy}
-              accountName={t.accountName}
-              objectId={t.objectId}
-              stages={t.stages}
-            />
-          ))}
-        </TabsContent>
-      </Tabs>
+      <div className="w-[100%]">
+        <Tabs
+          value={taskType}
+          onValueChange={(v) => setTaskType(v as TaskType | 'incident,regular')}
+          className="w-[100%] mb-3"
+        >
+          <TabsList>
+            <TabsTrigger value="incident,regular">Все задачи</TabsTrigger>
+            <TabsTrigger value="incident">Инциденты</TabsTrigger>
+            <TabsTrigger value="regular">Плановые</TabsTrigger>
+          </TabsList>
+        </Tabs>
+        {tasksQuery.data?.data.map((t) => (
+          <TaskItem
+            key={t.task_id}
+            taskId={t.task_id.toString()}
+            taskableType={t.task_type}
+            deadlineAt={dayjs(t.deadline)}
+            className="mb-5"
+            createdBy={'Иванов Иван Иванович'}
+            accountName={'ООО "Мясо и рыба"'}
+            objectId={t.object.object_id.toString()}
+            stages={t.transitions.map((t) => t.status)} 
+            showObjectButton={false}          />
+        ))}
+        <Separator />
+        <div className="mt-5 flex">
+          {page !== 0 && (
+            <Link
+              href={`/objects/${params.objectId}?page=${page - 1}`}
+              className={buttonVariants({ variant: 'default' }) + ' mr-2'}
+            >
+              Предыдущая страница
+            </Link>
+          )}
+          <Button disabled={true} className="mr-2">
+            {page + 1} / {(tasksQuery.data?.total_pages ?? 0) + 1}
+          </Button>
+          {page < (tasksQuery.data?.total_pages ?? 0) - 1 && (
+            <Link
+              href={`/objects/${params.objectId}?page=${page + 1}`}
+              className={buttonVariants({ variant: 'default' })}
+            >
+              Следующая страница
+            </Link>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

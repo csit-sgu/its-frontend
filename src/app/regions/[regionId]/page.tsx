@@ -118,6 +118,7 @@ export default function RegionProfile({ params }: { params: { regionId: string }
                   accountName={'ООО "Мясо и рыба"'}
                   objectId={t.object.object_id.toString()}
                   stages={t.transitions.map((t) => t.status)}
+                  showObjectButton={true}
                 />
               ))}
               <Separator />

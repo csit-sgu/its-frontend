@@ -30,7 +30,8 @@ export function TaskItem({
   className,
   objectId,
   stages,
-}: TaskEntity & { className?: string }) {
+  showObjectButton,
+}: TaskEntity & { className?: string; showObjectButton: boolean }) {
   const [historyIsOpen, setHistoryIsOpen] = useState<boolean>(false);
 
   const historyButton = (
@@ -63,9 +64,11 @@ export function TaskItem({
       </CardContent>
       <CardFooter>
         <div className="w-[100%]">
-          <Button className="w-[100%] mb-3">
-            <Link href={`/objects/${objectId}`}>Открыть страницу объекта</Link>
-          </Button>
+          {showObjectButton && (
+            <Button className="w-[100%] mb-3">
+              <Link href={`/objects/${objectId}`}>Открыть страницу объекта</Link>
+            </Button>
+          )}
           {historyButton}
           {historyIsOpen && <TaskStageTimeline taskId={taskId} className="mt-3" />}
         </div>
