@@ -1,7 +1,7 @@
 import { TaskEntity, TaskType } from '@/domain/types';
 import { useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { TaskStages } from './task-stages';
 import { TaskStageTimeline } from './task-stage-timeline';
 import { Badge } from '@/components/ui/badge';
@@ -65,9 +65,7 @@ export function TaskItem({
       <CardFooter>
         <div className="w-[100%]">
           {showObjectButton && (
-            <Button className="w-[100%] mb-3">
-              <Link href={`/objects/${objectId}`}>Открыть страницу объекта</Link>
-            </Button>
+            <Link href={`/objects/${objectId}`} className={buttonVariants('default') + ' w-full mb-3'}>Открыть страницу объекта</Link>
           )}
           {historyButton}
           {historyIsOpen && <TaskStageTimeline taskId={taskId} className="mt-3" />}
